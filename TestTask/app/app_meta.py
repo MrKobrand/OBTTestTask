@@ -4,6 +4,7 @@ from .controller import controller
 from .actions import (
     ContentTypePack,
     UserPack,
+    PermissionPack
 )
 
 
@@ -20,7 +21,8 @@ def register_actions():
     """
     return controller.packs.extend([
         ContentTypePack(),
-        UserPack()
+        UserPack(),
+        PermissionPack(),
     ])
 
 

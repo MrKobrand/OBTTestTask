@@ -1,9 +1,15 @@
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    User,
+    Permission
+)
 from m3 import ApplicationLogicException
 from objectpack.actions import ObjectPack
 from objectpack.ui import ModelEditWindow
-from .ui import UserAddWindow
+from .ui import (
+    UserAddWindow,
+    PermissionAddWindow,
+)
 
 
 class ContentTypePack(ObjectPack):
@@ -81,3 +87,31 @@ class UserPack(ObjectPack):
                     return obj
                 else:
                     raise ApplicationLogicException(u'Пользователь с этим никнеймом уже существует!')
+
+
+class PermissionPack(ObjectPack):
+    model = Permission
+    add_window = edit_window = PermissionAddWindow
+    add_to_menu = True
+    add_to_desktop = True
+
+    def save_row(self, obj, create_new, request, context, *args, **kwargs):
+        CONTENT_TYPE_POSITION = 4
+        CONTENT_TYPE_VALUE_FROM_INDEX = 12
+
+        content_type_id_from_ui = int(
+            request.body.decode('ascii').split('&')[CONTENT_TYPE_POSITION][CONTENT_TYPE_VALUE_FROM_INDEX:]
+        )
+
+        all_content_types = ContentType.objects.all()
+        CONTENT_TYPES_ID = [
+            content_type.id for content_type in all_content_types
+        ]
+
+        for content_type_id in CONTENT_TYPES_ID:
+            if content_type_id == content_type_id_from_ui:
+                obj.content_type_id = content_type_id
+                break
+
+        obj.save()
+        return obj
