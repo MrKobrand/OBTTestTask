@@ -1,7 +1,8 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import (
     User,
-    Permission
+    Permission,
+    Group,
 )
 from m3 import ApplicationLogicException
 from objectpack.actions import ObjectPack
@@ -115,3 +116,10 @@ class PermissionPack(ObjectPack):
 
         obj.save()
         return obj
+
+
+class GroupPack(ObjectPack):
+    model = Group
+    add_window = edit_window = ModelEditWindow.fabricate(model)
+    add_to_menu = True
+    add_to_desktop = True

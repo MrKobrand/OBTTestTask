@@ -4,7 +4,8 @@ from .controller import controller
 from .actions import (
     ContentTypePack,
     UserPack,
-    PermissionPack
+    PermissionPack,
+    GroupPack
 )
 
 
@@ -23,6 +24,7 @@ def register_actions():
         ContentTypePack(),
         UserPack(),
         PermissionPack(),
+        GroupPack(),
     ])
 
 
