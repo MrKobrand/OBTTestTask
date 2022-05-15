@@ -1,7 +1,10 @@
 from django.conf.urls import url
 from objectpack import desktop
 from .controller import controller
-from .actions import ContentTypePack
+from .actions import (
+    ContentTypePack,
+    UserPack,
+)
 
 
 def register_urlpatterns():
@@ -16,7 +19,8 @@ def register_actions():
     Регистрация экшен-паков
     """
     return controller.packs.extend([
-        ContentTypePack()
+        ContentTypePack(),
+        UserPack()
     ])
 
 
@@ -24,7 +28,6 @@ def register_desktop_menu():
     """
     Регистрация элементов рабочего стола
     """
-
     desktop.uificate_the_controller(
         controller
     )
